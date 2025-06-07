@@ -1,0 +1,150 @@
+/* Header Container */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #A0C878;
+  position: sticky;
+  font-family: 'open-sans', sans-serif;
+  top: 0;
+  z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 1);
+}
+
+/* Left Section - Logo */
+.header-left {
+  flex: 1;
+  min-width: 120px;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo-img {
+  height: 75px;
+  width: auto;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Center Section - Search */
+.header-center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  min-width: 300px;
+  padding: 0 1rem;
+}
+
+/* Right Section - Auth Links */
+.header-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.auth-links {
+  display: flex;
+  align-items: center;
+    font-size: 1.2rem;
+}
+
+.nav-link {
+  opacity: 0.8;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.nav-link:hover {
+  color: #fff;
+}
+
+.login-link {
+  color: white ;
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+}
+
+.login-link:hover {
+  color: black;
+}
+
+.divider {
+  color: #000;
+  opacity: 50%;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.Chat-icon {
+  width: 3rem;
+  height: 3rem;
+  color: #333;
+  transition: color 0.2s;
+  align-items: center;
+}
+
+.Profile {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.sell-button {
+  background-color: #649132;
+  font-family: 'raleway', sans-serif;
+  text-decoration: none;
+  align-items: center;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 32px;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sell-button:hover {
+  background-color: #53782A;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .header-center {
+    width: 100%;
+    padding: 0;
+    order: 3;
+    margin-top: 1rem;
+  }
+
+  .auth-links {
+    margin-top: 0.5rem;
+  }
+}
