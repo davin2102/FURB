@@ -6,6 +6,7 @@
   flex-shrink: 0;
   transition: transform 0.2s, box-shadow 0.2s;
   font-family: 'inter', sans-serif;
+  position: relative;
 }
 
 .ItemBox:hover {
@@ -77,4 +78,25 @@
 .bookmark-btn.bookmarked {
   background: #A0C878;
   color: white;
+}
+
+.bookmark-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.7rem;
+  color: #bbb;
+  cursor: pointer;
+  z-index: 2;
+  transition: color 0.2s;
+}
+
+.bookmark-icon.bookmarked {
+  color: #f4b400; /* gold */
+}
+
+.bookmark-icon:hover {
+  color: #f4b400;
 }
