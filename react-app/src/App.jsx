@@ -8,6 +8,7 @@ import EditProfile from "./pages/EditProfile";
 import Logout from "./components/Logout";
 import About from "./pages/About";
 import Sell from "./pages/Sell";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/Logout" element={<Logout />} />
         <Route path="/About" element={<About />} />
         <Route path="/Sell" element={<Sell />} />
+        <Route path="/item/:id" element={<ProductDetail />} />
         {/* Add more routes here as needed */}
       </Routes>
     </div>
