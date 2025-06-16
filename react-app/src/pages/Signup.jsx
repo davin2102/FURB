@@ -51,7 +51,8 @@ const SignUp = () => {
       } else {
         alert(result);
       }
-    } catch (error) {
+    // eslint-disable-next-line no-unused-vars
+    } catch (err) {
       alert('Signup failed. Please try again.');
     }
   };

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './EditProfile.css';
@@ -49,7 +50,6 @@ const EditProfile = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    // Send dob instead of birthDate for backend compatibility
     const payload = { ...formData, dob: formData.birthDate };
     fetch('http://localhost:5000/profile', {
       method: 'POST',
@@ -62,7 +62,6 @@ const EditProfile = () => {
     })
     .then((data) => {
       setLoading(false);
-      // Update localStorage with latest profile info from backend
       if (data && data.user) {
         localStorage.setItem('user', JSON.stringify({
           firstName: data.user.firstName,

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import './LoginForm.css'; // We'll create this CSS file next
 import logo from '/images/logo_2.png'; // Adjust the path as necessary
@@ -6,32 +7,41 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password
-        }),
-      });
-      const result = await response.json().catch(() => null);
-      if (result && result.message === 'Login successful!') {
-        localStorage.setItem('user', JSON.stringify({ email }));
-        window.location.href = '/HomeLogin';
-      } else {
-        const text = result && result.message ? result.message : await response.text();
-        alert(text);
-      }
-    } catch (error) {
-      alert('Login failed. Please try again.');
-    }
-  };
+    // ...existing code...
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password
+      }),
+    });
 
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      result = null;
+    }
+
+    if (result && result.message === 'Login successful!') {
+      localStorage.setItem('user', JSON.stringify({ email }));
+      window.location.href = '/HomeLogin';
+    } else {
+      const text = result && result.message ? result.message : await response.text();
+      alert(text);
+    }
+  } catch (err) {
+    alert('Login failed. Please try again.');
+  }
+};
+// ...existing code...
+  // ...existing code...
   return (
     <div className='login-page'>
       <div className="login-container">

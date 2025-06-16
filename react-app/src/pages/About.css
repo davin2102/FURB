@@ -169,9 +169,9 @@
 }
 
 .application-section {
-  text-align: center; /* Center-align title and box */
-  margin: 200px auto; /* Maintain spacing */
-  max-width: 70%; /* Match box width */
+  text-align: center; 
+  margin: 200px auto; 
+  max-width: 70%; 
 }
 
 .application-title {
