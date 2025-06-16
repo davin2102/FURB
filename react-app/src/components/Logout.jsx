@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Logout.css';
 import logo from '/images/logo_2.png'; // Adjust the path as necessary
 
