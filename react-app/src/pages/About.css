@@ -36,7 +36,7 @@
   justify-content: center;
   padding-left: 48px;
   color: #fff;
-  background: rgba(0,0,0,0.10);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 /* Content section styling */
@@ -50,7 +50,7 @@
   padding: 2rem;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .about-text h2 {
@@ -74,7 +74,7 @@
 
 .challenge-label {
   font-weight: 500;
-  color: #A0C878;
+  color: #a0c878;
   font-size: 1.5rem;
   font-weight: 500;
   margin-bottom: 0.1rem;
@@ -93,7 +93,6 @@
   margin-top: 1rem;
 }
 
-
 .mission-flex {
   display: flex;
   align-items: flex-start; /* was center */
@@ -103,7 +102,6 @@
   flex-wrap: wrap;
 }
 
-
 .mission-images-col {
   display: flex;
   flex-direction: column;
@@ -111,7 +109,6 @@
   justify-content: center;
   align-items: center;
 }
-
 
 .mission-img-small-1 {
   width: 230px;
@@ -136,7 +133,7 @@
   object-fit: cover;
   border-radius: 18px;
   /* margin: 0 32px; */
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .mission-text-col {
@@ -147,7 +144,7 @@
 
 .mission-title {
   font-weight: 500;
-  color: #A0C878;
+  color: #a0c878;
   font-size: 1.5rem;
   font-weight: 500;
   margin-bottom: 0.2rem;
@@ -169,16 +166,16 @@
 }
 
 .application-section {
-  text-align: center; 
-  margin: 200px auto; 
-  max-width: 70%; 
+  text-align: center;
+  margin: 200px auto;
+  max-width: 70%;
 }
 
 .application-title {
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
-  font-weight: 500; 
-  color: #A0C878;
+  font-weight: 500;
+  color: #a0c878;
 }
 
 .application-highlight {
@@ -202,7 +199,7 @@
 .application-text span {
   display: inline-block;
   opacity: 1;
-  transform: none
+  transform: none;
 }
 
 .application-text:hover span {
@@ -212,7 +209,7 @@
 /* Stagger with 0.2s interval between lines */
 .application-text:hover span:nth-child(1) {
   animation: textReveal 0.6s ease-out;
-  animation-delay: 0.0s;
+  animation-delay: 0s;
 }
 .application-text:hover span:nth-child(2) {
   animation: textReveal 0.6s ease-out;
@@ -228,7 +225,6 @@
   transform: none;
   animation: none;
 }
-
 
 @keyframes textReveal {
   0% {
@@ -249,7 +245,7 @@
 }
 
 .business-label {
-  color: #A0C878;
+  color: #a0c878;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
   font-weight: 500;
@@ -275,7 +271,6 @@
   margin-bottom: 1rem;
   object-fit: contain;
 }
-
 
 .business-card {
   background: white;
@@ -318,7 +313,7 @@
 
 .team-subtitle {
   font-size: 1.5rem;
-  color: #A0C878;
+  color: #a0c878;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -340,6 +335,11 @@
 .team-member {
   width: 160px;
   text-align: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.team-member:hover {
+  transform: translateY(-16px);
 }
 
 .team-photo {
@@ -361,7 +361,6 @@
   font-size: 0.95rem;
   color: #555;
 }
-
 
 /* Responsive adjustments */
 @media (max-width: 900px) {
@@ -393,14 +392,14 @@
     height: 100px;
   }
 
-
   .mission-text-col {
     min-width: 0;
   }
 }
 
 @media (max-width: 768px) {
-  .banner-container-about, .banner-image-about {
+  .banner-container-about,
+  .banner-image-about {
     height: 140px;
   }
   .banner-overlay-about {
@@ -415,7 +414,8 @@
 }
 
 @media (max-width: 480px) {
-  .banner-container-about, .banner-image-about {
+  .banner-container-about,
+  .banner-image-about {
     height: 90px;
   }
   .about-content {

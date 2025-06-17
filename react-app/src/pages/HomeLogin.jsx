@@ -1,32 +1,33 @@
-import HeaderLogin from '../components/HeaderLogin';
-import Advertisement from '../components/Advertisement';
-import './Home.css';
-import ItemBox from '../components/ItemBox';
-import Footer from '../components/Footer';
+import Header from "../components/HeaderLogin";
+import Advertisement from "../components/Advertisement";
+import "./Home.css";
+import ItemBox from "../components/ItemBox";
+import Footer from "../components/Footer";
+import { useState, useEffect } from "react";
 
-const HomeLogin = () => {
-    return (
-        <div className="home-page">
-            <HeaderLogin />
-            <Advertisement />
-            <Content />
-            <Footer />
-        </div>
-    );
+const Home = () => {
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:5002/items")
+      .then((res) => res.json())
+      .then((data) => setItems(data));
+  }, []);
+  return (
+    <div className="home-page">
+      <Header />
+      <Advertisement />
+      <Content items={items} />
+      <Footer />
+    </div>
+  );
 };
 
-const products = [
-  { id: 1, title: 'Product 1', price: '$99.99', image: 'https://via.placeholder.com/150', location: 'Jakarta' },
-  { id: 2, title: 'Product 2', price: '$79.99', image: 'https://via.placeholder.com/150', location: 'Bandung' },
-  { id: 3, title: 'Product 3', price: '$59.99', image: 'https://via.placeholder.com/150', location: 'Surabaya' },
-  { id: 4, title: 'Product 4', price: '$39.99', image: 'https://via.placeholder.com/150', location: 'Bali' },
-  { id: 5, title: 'Product 5', price: '$99.99', image: 'https://via.placeholder.com/150', location: 'Jakarta' },
-  { id: 6, title: 'Product 6', price: '$79.99', image: 'https://via.placeholder.com/150', location: 'Bandung' },
-  { id: 7, title: 'Product 7', price: '$59.99', image: 'https://via.placeholder.com/150', location: 'Surabaya' },
-  { id: 8, title: 'Product 8', price: '$39.99', image: 'https://via.placeholder.com/150', location: 'Bali' }
-];
-
-const Content = () => {
+const Content = ({ items }) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userEmail = user && user.email ? user.email : null;
+  const filteredItems = userEmail
+    ? items.filter((item) => item.seller !== userEmail)
+    : items;
   return (
     <div className="content">
       <div className="section-header">
@@ -34,13 +35,15 @@ const Content = () => {
         <button className="content-view-all">view all</button>
       </div>
       <div className="products-row">
-        {products.map(product => (
+        {filteredItems.map((item) => (
           <ItemBox
-            key={product.id}
-            title={product.title}
-            price={product.price}
-            image={product.image}
-            location={product.location}
+            key={item._id}
+            id={item._id}
+            title={item.title}
+            price={item.price}
+            image={item.imageUrl || item.image}
+            location={item.location}
+            seller={item.seller}
           />
         ))}
       </div>
@@ -48,4 +51,4 @@ const Content = () => {
   );
 };
 
-export default HomeLogin;
+export default Home;
