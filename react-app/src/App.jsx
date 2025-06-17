@@ -9,6 +9,7 @@ import Logout from "./components/Logout";
 import About from "./pages/About";
 import Sell from "./pages/Sell";
 import ProductDetail from "./pages/ProductDetail";
+import Filtered from "./pages/Filtered";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/About" element={<About />} />
         <Route path="/Sell" element={<Sell />} />
         <Route path="/item/:id" element={<ProductDetail />} />
+        <Route path="/filtered" element={<Filtered />} />
         {/* Add more routes here as needed */}
       </Routes>
     </div>
