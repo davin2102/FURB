@@ -57,7 +57,7 @@ const handleSubmit = async (e) => {
         <div className="form-group">
           <label htmlFor="email"></label>
           <input
-            placeholder='email'
+            placeholder='Email'
             type="email"
             id="email"
             value={email}
@@ -69,7 +69,7 @@ const handleSubmit = async (e) => {
         <div className="form-group">
           <label htmlFor="password"></label>
           <input
-            placeholder='password'
+            placeholder='Password'
             type="password"
             id="password"
             value={password}
@@ -77,7 +77,7 @@ const handleSubmit = async (e) => {
             required
           />
           <div className="forgot-password">
-            <a href="/Signup">Don't have an Account? <span>Click here!</span></a>
+            <a href="/Signup">Don't have an Account? Click here!</a>
           </div>
         </div>
         
