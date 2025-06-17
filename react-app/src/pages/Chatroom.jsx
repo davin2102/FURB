@@ -51,17 +51,12 @@ const Chatroom = () => {
   }, [username]);
 
   useEffect(() => {
-    if (selectedUser) {
-      fetch(
-        `${SOCKET_URL}/messages?user1=${username}&user2=${selectedUser.email}`
-      )
-        .then((res) => res.json())
-        .then((history) => setMessages(history))
-        .catch((err) => console.error("Failed to fetch message history:", err));
-    } else {
-      setMessages([]);
-    }
-  }, [selectedUser, username]);
+  // Fetch all messages where the user is either sender or receiver
+  fetch(`${SOCKET_URL}/messages?user=${username}`)
+    .then((res) => res.json())
+    .then((allMsgs) => setMessages(allMsgs))
+    .catch((err) => console.error("Failed to fetch messages:", err));
+}, [username]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -79,6 +74,7 @@ const Chatroom = () => {
     setInput("");
   };
 
+  // Compute latest message for each contact
   const latestMessages = {};
   messages.forEach((msg) => {
     const contact = msg.user === username ? msg.to : msg.user;
@@ -87,9 +83,10 @@ const Chatroom = () => {
     }
   });
 
-  const filteredMessages = messages.filter(msg =>
-    (msg.user === username && msg.to === selectedUser?.email) ||
-    (msg.user === selectedUser?.email && msg.to === username)
+  const filteredMessages = messages.filter(
+    (msg) =>
+      (msg.user === username && msg.to === selectedUser?.email) ||
+      (msg.user === selectedUser?.email && msg.to === username)
   );
 
   useEffect(() => {
@@ -111,33 +108,44 @@ const Chatroom = () => {
           <div className="chatroom-userlist">
             <div className="chatroom-userlist-title">Contacts</div>
             <ul className="chatroom-userlist-list">
-              {allUsers.map((user) => (
-                <li
-                  key={user.email}
-                  className={`chatroom-userlist-item${
-                    selectedUser?.email === user.email ? " selected" : ""
-                  }`}
-                  onClick={() => setSelectedUser(user)}
-                >
-                  <div className="chatroom-userlist-user-info">
-                    <span
-                      className={`online-indicator ${onlineUsers.includes(user.email) ? "online" : ""}`}
-                      title={onlineUsers.includes(user.email) ? "Online" : "Offline"}
-                    ></span>
-                    <span className="chatroom-userlist-username">{user.name}</span>
-                  </div>
-                  {latestMessages[user.email] && (
-                    <div className="chatroom-userlist-latest-message">
-                      <span className="chatroom-userlist-latest-message-user">
-                        {latestMessages[user.email].user === username ? "You: " : ""}
-                      </span>
-                      <span className="chatroom-userlist-latest-message-text">
-                        {latestMessages[user.email].text}
+              {allUsers.map((user) => {
+                const latest = latestMessages[user.email];
+                return (
+                  <li
+                    key={user.email}
+                    className={`chatroom-userlist-item${
+                      selectedUser?.email === user.email ? " selected" : ""
+                    }`}
+                    onClick={() => setSelectedUser(user)}
+                  >
+                    <div className="chatroom-userlist-user-info">
+                      <span
+                        className={`online-indicator ${
+                          onlineUsers.includes(user.email) ? "online" : ""
+                        }`}
+                        title={
+                          onlineUsers.includes(user.email)
+                            ? "Online"
+                            : "Offline"
+                        }
+                      ></span>
+                      <span className="chatroom-userlist-username">
+                        {user.name}
                       </span>
                     </div>
-                  )}
-                </li>
-              ))}
+                    {latest && (
+                      <div className="chatroom-userlist-latest-message">
+                        <span className="chatroom-userlist-latest-message-user">
+                          {latest.user === username ? "You: " : ""}
+                        </span>
+                        <span className="chatroom-userlist-latest-message-text">
+                          {latest.text}
+                        </span>
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <div className="chatroom-main">

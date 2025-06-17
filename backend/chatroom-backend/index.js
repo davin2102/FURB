@@ -17,6 +17,10 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('Chat API is running!');
+});
+
 // Add mongoose connection
 mongoose.connect('mongodb+srv://User123:12345@cluster0.3fut4u7.mongodb.net/furb-chats')
   .then(() => console.log('MongoDB connected for chat'))
