@@ -9,6 +9,10 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+app.get('/', (req, res) => {
+  res.send('Item API is running!');
+});
+
 // Configure multer for image upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -93,4 +97,6 @@ app.get('/items/:id', async (req, res) => {
 });
 
 const PORT = 5002;
-app.listen(PORT, () => console.log(`Items backend running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Item server is running on http://localhost:${PORT}`);
+})

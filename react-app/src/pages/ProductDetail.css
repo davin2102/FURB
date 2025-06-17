@@ -1,0 +1,139 @@
+.product-detail-bg {
+  background-color: #f2f4f5;
+  min-height: 100vh;
+}
+
+.product-detail-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'open sans', sans-serif;
+}
+
+.product-detail-image-card {
+  background-color: white;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.product-detail-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.product-detail-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.product-detail-price-card,
+.product-detail-seller-card,
+.product-detail-description-card {
+  background-color: white;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.product-detail-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-detail-price {
+  font-size: 32px;
+  font-weight: 600;
+  color: #002f34;
+  margin: 0;
+}
+
+.product-detail-icons {
+  display: flex;
+  align-items: center; /* Ensure vertical alignment */
+  gap: 8px;            /* Adjust gap for tighter spacing if needed */
+}
+
+.product-detail-icon {
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  height: 32px; /* Ensures consistent button height */
+  width: 32px;
+}
+
+.product-detail-title {
+  font-size: 20px;
+  font-weight: normal;
+  margin: 12px 0;
+}
+
+.product-detail-location {
+  color: #666;
+  margin: 0;
+}
+
+.product-detail-seller-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.product-detail-seller-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #002f34;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.product-detail-seller-name {
+  font-weight: 600;
+}
+
+.product-detail-seller-member {
+  color: #666;
+  font-size: 14px;
+}
+
+.product-detail-chat-btn {
+  width: 100%;
+  background-color: #649132;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.product-detail-chat-btn:hover{
+    background-color: #466623;
+}
+
+.product-detail-description-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.product-detail-description {
+  color: #666;
+}
+

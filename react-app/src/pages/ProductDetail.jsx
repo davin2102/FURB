@@ -1,14 +1,17 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import HeaderLogin from "../components/HeaderLogin";
+import Header from "../components/Header";
+import "./ProductDetail.css";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
-  const [sellerName, setSellerName] = useState(""); // NEW
+  const [sellerName, setSellerName] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
+  const [bookmarked, setBookmarked] = useState(false);
+  const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,6 +33,12 @@ const ProductDetail = () => {
   }, [id]);
 
   useEffect(() => {
+    if (!item) return;
+    const stored = JSON.parse(localStorage.getItem("bookmarkedItems") || "[]");
+    setBookmarked(stored.some((b) => b._id === item._id));
+  }, [item]);
+
+  useEffect(() => {
     if (location.state && location.state.selectedUser) {
       setSelectedUser(location.state.selectedUser);
     }
@@ -37,11 +46,9 @@ const ProductDetail = () => {
 
   const handleChatClick = () => {
     if (!currentUser) {
-      alert("Please login to chat with the seller");
       navigate("/login");
       return;
     }
-    // Navigate to Chatroom with seller email
     navigate('/Chatroom', { 
       state: { 
         selectedUser: { email: item.seller, name: sellerName }
@@ -49,141 +56,130 @@ const ProductDetail = () => {
     });
   };
 
+  const handleBookmark = () => {
+    if (!item) return;
+    let stored = JSON.parse(localStorage.getItem("bookmarkedItems") || "[]");
+    if (bookmarked) {
+      stored = stored.filter((b) => b._id !== item._id);
+      setBookmarked(false);
+    } else {
+      stored.push(item);
+      setBookmarked(true);
+    }
+    localStorage.setItem("bookmarkedItems", JSON.stringify(stored));
+  };
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/item/${id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (err) {
+      alert("Failed to copy link.");
+    }
+  };
+
   if (!item) return <div>Loading...</div>;
 
   return (
-    <div style={{ backgroundColor: "#f2f4f5", minHeight: "100vh" }}>
-      <HeaderLogin />
-      <div style={{ 
-        display: "grid",
-        gridTemplateColumns: "2fr 1fr",
-        gap: "20px",
-        maxWidth: "1200px",
-        margin: "0 auto",
-        padding: "20px"
-      }}>
+    <div className="product-detail-bg">
+      {currentUser ? <HeaderLogin /> : <Header />}
+      <div className="product-detail-grid">
         {/* Left Column - Image */}
-        <div style={{ 
-          backgroundColor: "white", 
-          borderRadius: "4px",
-          padding: "20px"
-        }}>
+        <div className="product-detail-image-card">
           <img
             src={`http://localhost:5002/uploads/${item.image}`}
             alt={item.title}
-            style={{
-              width: "100%",
-              height: "auto",
-              borderRadius: "4px"
-            }}
+            className="product-detail-image"
           />
         </div>
 
         {/* Right Column - Details */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        <div className="product-detail-details">
           {/* Price Card */}
-          <div style={{ 
-            backgroundColor: "white", 
-            borderRadius: "4px",
-            padding: "20px"
-          }}>
-            <div style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center"
-            }}>
-              <h1 style={{
-                fontSize: "32px",
-                fontWeight: "600",
-                color: "#002f34",
-                margin: "0"
-              }}>Rp {item.price.toLocaleString()}</h1>
-              <div style={{ display: "flex", gap: "16px" }}>
-                <span style={{ fontSize: "24px", cursor: "pointer" }}>⤴</span>
-                <span style={{ fontSize: "24px", cursor: "pointer" }}>♡</span>
+          <div className="product-detail-price-card">
+            <div className="product-detail-price-row">
+              <h1 className="product-detail-price">
+                Rp {item.price.toLocaleString()}
+              </h1>
+              <div className="product-detail-icons">
+                <button
+                  className="product-detail-icon"
+                  onClick={handleShare}
+                  title="Copy link"
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer"
+                  }}
+                >
+                  {/* Modern share SVG */}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7ca850" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="18" cy="5" r="3"/>
+                    <circle cx="6" cy="12" r="3"/>
+                    <circle cx="18" cy="19" r="3"/>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                  </svg>
+                </button>
+                <button
+                  className={`product-detail-icon bookmark-btn${bookmarked ? " bookmarked" : ""}`}
+                  onClick={handleBookmark}
+                  title={bookmarked ? "Remove Bookmark" : "Add to Bookmark"}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer"
+                  }}
+                >
+                  {bookmarked ? (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#f4b400" stroke="#f4b400" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                    </svg>
+                  ) : (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                    </svg>
+                  )}
+                </button>
               </div>
+              {copied && (
+                <span style={{ color: "#7ca850", marginLeft: 8, fontSize: 14 }}>
+                  Link copied!
+                </span>
+              )}
             </div>
-            <h2 style={{
-              fontSize: "20px",
-              fontWeight: "normal",
-              margin: "12px 0"
-            }}>{item.title}</h2>
-            <p style={{
-              color: "#666",
-              margin: "0"
-            }}>{item.location}</p>
+            <h2 className="product-detail-title">{item.title}</h2>
+            <p className="product-detail-location">{item.location}</p>
           </div>
 
           {/* Seller Card */}
-          <div style={{ 
-            backgroundColor: "white", 
-            borderRadius: "4px",
-            padding: "20px"
-          }}>
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "16px"
-            }}>
-              <div style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-                backgroundColor: "#002f34",
-                color: "white",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginRight: "12px"
-              }}>
+          <div className="product-detail-seller-card">
+            <div className="product-detail-seller-row">
+              <div className="product-detail-seller-avatar">
                 {sellerName ? sellerName[0] : "?"}
               </div>
               <div>
-                <div style={{ fontWeight: "600" }}>{sellerName || item.seller}</div>
-                <div style={{ color: "#666", fontSize: "14px" }}>Member since 2023</div>
+                <div className="product-detail-seller-name">{sellerName || item.seller}</div>
+                <div className="product-detail-seller-member">{item.seller}</div>
               </div>
             </div>
 
             <button
               onClick={handleChatClick}
-              style={{
-                width: "100%",
-                backgroundColor: "#002f34",
-                color: "white",
-                padding: "12px",
-                border: "none",
-                borderRadius: "4px",
-                fontSize: "16px",
-                fontWeight: "600",
-                cursor: "pointer",
-                marginBottom: "12px"
-              }}
+              className="product-detail-chat-btn"
             >
-              Chat Dengan Penjual
+              Message Seller
             </button>
-
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              color: "#666",
-              fontSize: "14px"
-            }}>
-            </div>
           </div>
 
           {/* Description Card */}
-          <div style={{ 
-            backgroundColor: "white", 
-            borderRadius: "4px",
-            padding: "20px"
-          }}>
-            <h3 style={{
-              fontSize: "18px",
-              fontWeight: "600",
-              marginBottom: "12px"
-            }}>Deskripsi</h3>
-            <p style={{ color: "#666" }}>{item.description}</p>
+          <div className="product-detail-description-card">
+            <h3 className="product-detail-description-title">Description</h3>
+            <p className="product-detail-description">{item.description}</p>
           </div>
         </div>
       </div>
