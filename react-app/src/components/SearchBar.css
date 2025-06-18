@@ -195,3 +195,33 @@
   font-size: 12px;
   color: #757575;
 }
+
+@media (max-width: 600px) {
+  .search-container {
+    max-width: 98vw;
+    width: 100%;
+    padding: 6px 4px;
+    border-radius: 18px;
+    font-size: 15px;
+  }
+  .search-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+  }
+  .input-wrapper {
+    width: 100%;
+    min-width: 0;
+  }
+  .search-input {
+    font-size: 15px;
+    padding: 0 !important;
+  }
+  .search-placeholder {
+    font-size: 15px;
+  }
+  .search-suggestions {
+    font-size: 14px;
+    max-height: 220px;
+  }
+}

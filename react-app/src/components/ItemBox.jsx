@@ -47,7 +47,7 @@ const ItemBox = ({
     if (typeof value === "string") value = value.replace(/[^\d]/g, "");
     const number = Number(value);
     if (isNaN(number)) return value;
-    return "Rp." + number.toLocaleString("id-ID") + ",-";
+    return "Rp " + number.toLocaleString("id-ID");
   };
 
   return (

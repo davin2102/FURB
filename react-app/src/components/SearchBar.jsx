@@ -53,7 +53,7 @@ const SearchBar = () => {
     setAILoading(true);
     setSuggestions([]);
     try {
-      const res = await fetch("http://localhost:5003/search", {
+      const res = await fetch(`http://localhost:5010/search`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
@@ -182,10 +182,19 @@ const SearchBar = () => {
             <img
               src="/images/ai-icon.png"
               alt="Switch to AI Search"
-              style={{ width: 22, height: 22, opacity: 0.7, marginRight:0 }}
+              style={{ width: 22, height: 22, opacity: 0.7, marginRight: 0 }}
             />
           ) : (
-            <span style={{ fontWeight: "bold", fontSize: 28, lineHeight: 1 , opacity:0.6}}>×</span>
+            <span
+              style={{
+                fontWeight: "bold",
+                fontSize: 28,
+                lineHeight: 1,
+                opacity: 0.6,
+              }}
+            >
+              ×
+            </span>
           )}
         </div>
       </div>

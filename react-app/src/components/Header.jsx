@@ -14,7 +14,7 @@ const Header = () => {
       </div>
 
       <div className="header-center">
-        <SearchBar />
+        <SearchBar className="search-bar"/>
       </div>
 
       <div className="header-right">

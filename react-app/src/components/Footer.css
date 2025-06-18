@@ -88,6 +88,26 @@
   font-size: 12px;
 }
 
+@media (max-width: 900px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    margin-left: 0;
+    padding: 20px 5px 10px;
+    gap: 30px;
+  }
+  .footer-logo {
+    height: 80px;
+  }
+}
+@media (max-width: 600px) {
+  .footer-content {
+    padding: 10px 2px 5px;
+  }
+  .footer-logo {
+    height: 48px;
+  }
+}
+
 @media (max-width: 768px) {
   .footer-content {
     grid-template-columns: 1fr;
