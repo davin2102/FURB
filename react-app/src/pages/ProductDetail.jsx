@@ -28,7 +28,7 @@ const ProductDetail = () => {
         return;
     }
 
-    fetch(`<span class="math-inline">\{ITEMS\_API\_BASE\_URL\}/items/</span>{id}`)
+    fetch(`${ITEMS_API_BASE_URL}/items/${id}`)
       .then((res) => {
           if (!res.ok) throw new Error('Failed to fetch item details');
           return res.json();
@@ -36,7 +36,7 @@ const ProductDetail = () => {
       .then((data) => {
         setItem(data);
         fetch(
-          `<span class="math-inline">\{LOGIN\_API\_BASE\_URL\}/profile?email\=</span>{encodeURIComponent(
+          `${LOGIN_API_BASE_URL}/profile?email=${encodeURIComponent(
             data.seller
           )}`
         )
@@ -99,7 +99,7 @@ const ProductDetail = () => {
   };
 
   const handleShare = async () => {
-    const url = `<span class="math-inline">\{window\.location\.origin\}/item/</span>{id}`;
+    const url = `${window.location.origin}/item/${id}`;
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
@@ -118,7 +118,7 @@ const ProductDetail = () => {
         {/* Left Column - Image */}
         <div className="product-detail-image-card">
           <img
-            src={`<span class="math-inline">\{ITEMS\_API\_BASE\_URL\}/uploads/</span>{item.image}`}
+            src={`${ITEMS_API_BASE_URL}/uploads/${item.image}`}
             alt={item.title}
             className="product-detail-image"
           />
@@ -146,3 +146,108 @@ const ProductDetail = () => {
                 >
                   {/* Modern share SVG */}
                   <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#7ca850"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="18" cy="5" r="3" />
+                    <circle cx="6" cy="12" r="3" />
+                    <circle cx="18" cy="19" r="3" />
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                  </svg>
+                </button>
+                <button
+                  className={`product-detail-icon bookmark-btn${
+                    bookmarked ? " bookmarked" : ""
+                  }`}
+                  onClick={handleBookmark}
+                  title={bookmarked ? "Remove Bookmark" : "Add to Bookmark"}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  {bookmarked ? (
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="#f4b400"
+                      stroke="#f4b400"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                    </svg>
+                  ) : (
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#bbb"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+              {copied && (
+                <span style={{ color: "#7ca850", marginLeft: 8, fontSize: 14 }}>
+                  Link copied!
+                </span>
+              )}
+            </div>
+            <h2 className="product-detail-title">{item.title}</h2>
+            <p className="product-detail-location">{item.location}</p>
+          </div>
+
+          {/* Seller Card */}
+          {currentUser && item.seller !== currentUser.email && (
+            <div className="product-detail-seller-card">
+              <div className="product-detail-seller-row">
+                <div className="product-detail-seller-avatar">
+                  {sellerName ? sellerName[0] : "?"}
+                </div>
+                <div>
+                  <div className="product-detail-seller-name">
+                    {sellerName || item.seller}
+                  </div>
+                  <div className="product-detail-seller-member">
+                    {item.seller}
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={handleChatClick}
+                className="product-detail-chat-btn"
+              >
+                Message Seller
+              </button>
+            </div>
+          )}
+
+          {/* Description Card */}
+          <div className="product-detail-description-card">
+            <h3 className="product-detail-description-title">Description</h3>
+            <p className="product-detail-description">{item.description}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductDetail;
