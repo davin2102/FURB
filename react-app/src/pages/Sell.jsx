@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import HeaderLogin from "../components/HeaderLogin";
 import "./Sell.css";
-import ItemBox from "../components/ItemBox";
+import ItemBox from "../components/ItemBoxSeller";
 import tiktok from "/images/tiktok.png";
 import instagram from "/images/instagram.png";
 import facebook from "/images/facebook.png";
@@ -13,8 +13,21 @@ const Sell = () => {
   const storedUser = JSON.parse(localStorage.getItem("user")) || {};
   const email = storedUser.email || "";
   const [user, setUser] = useState({});
+  const [items, setItems] = useState([]);
+  const [soldItems, setSoldItems] = useState([]);
+  const [search, setSearch] = useState("");
+  const [itemForm, setItemForm] = useState({
+    title: "",
+    description: "",
+    price: "",
+    location: "",
+    image: "",
+  });
+  const [selectedImage, setSelectedImage] = useState(null);
+
   useEffect(() => {
     if (!email) return;
+
     const fetchUser = async () => {
       try {
         const res = await fetch(
@@ -30,25 +43,39 @@ const Sell = () => {
         setUser({});
       }
     };
-    fetchUser();
-  }, [email]);
-  const { firstName = "User", lastName = "", gender = "", bio = "" } = user;
-  const [items, setItems] = useState([]);
-  const [search, setSearch] = useState("");
-  const [itemForm, setItemForm] = useState({
-    title: "",
-    description: "",
-    price: "",
-    location: "",
-    image: "",
-  });
-  const [selectedImage, setSelectedImage] = useState(null);
 
-  useEffect(() => {
-    fetch("http://localhost:5002/items")
-      .then((res) => res.json())
-      .then((data) => setItems(data));
-  }, []);
+    const fetchItems = async () => {
+      try {
+        const res = await fetch("http://localhost:5002/items");
+        if (res.ok) {
+          const data = await res.json();
+          setItems(data);
+        }
+      } catch (err) {
+        console.error("Error fetching items:", err);
+      }
+    };
+
+    const fetchSoldItems = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5002/sold-items?email=${encodeURIComponent(email)}`
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setSoldItems(data);
+        }
+      } catch (err) {
+        console.error("Error fetching sold items:", err);
+      }
+    };
+
+    fetchUser();
+    fetchItems();
+    fetchSoldItems();
+  }, [email]);
+
+  const { firstName = "User", lastName = "", gender = "", bio = "" } = user;
 
   const handleItemChange = (e) => {
     setItemForm({ ...itemForm, [e.target.name]: e.target.value });
@@ -57,11 +84,8 @@ const Sell = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setSelectedImage(file);
-    // You can also display a preview of the image here
-    // using URL.createObjectURL(file)
   };
 
-  // Handle form submit
   const handleAddItem = async (e) => {
     e.preventDefault();
     try {
@@ -70,17 +94,13 @@ const Sell = () => {
       formData.append("description", itemForm.description);
       formData.append("price", Number(itemForm.price));
       formData.append("location", itemForm.location);
-      formData.append("image", selectedImage); // Append the image file
+      formData.append("image", selectedImage);
       formData.append("seller", email);
-
-      console.log("Form Data:", formData); // Log the FormData object
 
       const response = await fetch("http://localhost:5002/items", {
         method: "POST",
-        body: formData, // Send FormData instead of JSON
+        body: formData,
       });
-
-      console.log("Response Status:", response.status); // Log the response status
 
       if (response.ok) {
         alert("Item added!");
@@ -92,18 +112,60 @@ const Sell = () => {
           image: "",
         });
         setSelectedImage(null);
-        // Refresh items list
         const newItems = await fetch("http://localhost:5002/items").then(
           (res) => res.json()
         );
         setItems(newItems);
       } else {
         const errorText = await response.text();
-        alert(`Failed to add item: ${errorText}`); // Display the error message
+        alert(`Failed to add item: ${errorText}`);
       }
     } catch (error) {
-      console.error("Error adding item:", error); // Log the error
-      alert(`Error adding item: ${error.message}`); // Display the error message
+      console.error("Error adding item:", error);
+      alert(`Error adding item: ${error.message}`);
+    }
+  };
+
+  const handleMarkAsSold = async (itemId) => {
+    try {
+      // 1. Get the item details
+      const itemResponse = await fetch(`http://localhost:5002/items/${itemId}`);
+      if (!itemResponse.ok) throw new Error("Failed to fetch item");
+      const item = await itemResponse.json();
+
+      // 2. Add to sold items
+      const soldResponse = await fetch("http://localhost:5002/sold-items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: item.title,
+          description: item.description,
+          price: item.price,
+          location: item.location,
+          image: item.image,
+          seller: item.seller,
+        }),
+      });
+
+      if (!soldResponse.ok) throw new Error("Failed to mark as sold");
+
+      // 3. Delete from active items
+      const deleteResponse = await fetch(
+        `http://localhost:5002/items/${itemId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!deleteResponse.ok) throw new Error("Failed to delete item");
+
+      // 4. Update state (use itemId, not item._id)
+      setItems((prev) => prev.filter((i) => i._id !== itemId));
+      const newSoldItem = await soldResponse.json();
+      setSoldItems((prev) => [...prev, newSoldItem]);
+    } catch (error) {
+      console.error("Error marking item as sold:", error);
+      alert(`Error: ${error.message}`);
     }
   };
 
@@ -161,15 +223,19 @@ const Sell = () => {
                 (item.title || "").toLowerCase().includes(search.toLowerCase())
             )
             .map((item) => (
-              <ItemBox
-                key={item._id}
-                id={item._id}
-                title={item.title}
-                price={item.price}
-                image={item.imageUrl || item.image}
-                location={item.location}
-                seller={item.seller}
-              />
+              <div className="item-with-button" key={item._id}>
+                <ItemBox
+                  key={item._id}
+                  id={item._id}
+                  title={item.title}
+                  price={item.price}
+                  image={item.imageUrl || item.image}
+                  location={item.location}
+                  seller={item.seller}
+                  isSold={false}
+                  onMarkAsSold={() => handleMarkAsSold(item._id)}
+                />
+              </div>
             ))}
         </div>
       </div>
@@ -177,9 +243,22 @@ const Sell = () => {
         <div className="sold-items">
           <h2>Sold Items</h2>
           <div className="sold-list">
-            {[...Array(6)].map((_, i) => (
-              <div className="sold-card" key={i}></div>
-            ))}
+            {soldItems.length > 0 ? (
+              soldItems.map((item) => (
+                <ItemBox
+                  key={item._id}
+                  id={item._id}
+                  title={item.title}
+                  price={item.price}
+                  image={item.imageUrl || item.image}
+                  location={item.location}
+                  seller={item.seller}
+                  isSold={true}
+                />
+              ))
+            ) : (
+              <p>No sold items yet</p>
+            )}
           </div>
         </div>
         <div className="add-item">
@@ -220,7 +299,7 @@ const Sell = () => {
             <input
               type="file"
               name="image"
-              accept="image/*" // Accept only image files
+              accept="image/*"
               onChange={handleImageChange}
             />
             <button type="submit" className="add-btn">

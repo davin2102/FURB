@@ -174,6 +174,7 @@
 
 .list-header h2 {
   margin: 0;
+  width: 10%;
   font-size: 1.3rem;
 }
 
@@ -206,6 +207,20 @@
 
 .item-card:hover {
   box-shadow: 0 4px 12px #0002;
+}
+
+.remove-btn{
+  border: none;
+  background: #ff4d4d;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.remove-btn:hover {
+  background: #e60000;
 }
 
 .bottom-section {
@@ -312,4 +327,35 @@
 
 .add-btn:hover {
   background: #ddd;
+}
+
+@media (max-width: 900px) {
+  .profile-section {
+    flex-direction: column;
+    min-width: 0;
+    gap: 12px;
+  }
+  .profile-banner {
+    min-width: 0;
+    width: 100%;
+  }
+  .list-section {
+    margin-top: 10px;
+  }
+}
+@media (max-width: 600px) {
+  .profile-section {
+    padding: 0 2px;
+  }
+  .profile-banner {
+    min-width: 0;
+    width: 100%;
+  }
+  .list-section {
+    padding: 0 2px;
+  }
+  .search-input {
+    width: 100px;
+    font-size: 0.9rem;
+  }
 }
