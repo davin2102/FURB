@@ -1,6 +1,6 @@
 import Header from "../components/HeaderLogin"; 
 import Advertisement from "../components/Advertisement";
-import "./Home.css"; /
+import "./Home.css"; 
 import ItemBox from "../components/ItemBox";
 import Footer from "../components/Footer";
 import { useState, useEffect } from "react";
