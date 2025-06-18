@@ -221,3 +221,17 @@
   box-shadow: 0 0 8px 2px #1cc90088, 0 0 0 2px #e3f2fd;
   border: 2px solid #fff;
 }
+
+@media (max-width: 900px) {
+  .chatroom-flex-row {
+    flex-direction: column;
+    height: auto;
+    min-height: 300px;
+  }
+  .chatroom-userlist {
+    width: 100%;
+    padding: 10px;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+}

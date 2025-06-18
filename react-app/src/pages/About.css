@@ -364,36 +364,25 @@
 
 /* Responsive adjustments */
 @media (max-width: 900px) {
+  .banner-container-about,
+  .banner-image-about {
+    height: 140px;
+  }
+  .about-content {
+    padding: 0 10px;
+  }
   .mission-flex {
     flex-direction: column;
-    align-items: stretch;
     gap: 18px;
   }
-  .mission-img-large {
-    margin: 0 auto 18px auto;
-    width: 90vw;
-    max-width: 320px;
-    height: 180px;
+}
+@media (max-width: 600px) {
+  .banner-container-about,
+  .banner-image-about {
+    height: 90px;
   }
-  .mission-images-col {
-    flex-direction: row;
-    gap: 10px;
-    justify-content: center;
-  }
-  .mission-img-small-1 {
-    width: 44vw;
-    max-width: 120px;
-    height: 60px;
-  }
-
-  .mission-img-small-2 {
-    width: 44vw;
-    max-width: 120px;
-    height: 100px;
-  }
-
-  .mission-text-col {
-    min-width: 0;
+  .about-content {
+    padding: 0 2px;
   }
 }
 
