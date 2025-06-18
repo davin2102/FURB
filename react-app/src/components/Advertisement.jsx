@@ -1,4 +1,4 @@
-import './advertisement.css';
+import './Advertisement.css';
 import AdvertisementImage from "/images/advertisement.png";
 import AdvertisementImage2 from "/images/advertisement2.png";
 import AdvertisementImage3 from "/images/advertisement3.png";
