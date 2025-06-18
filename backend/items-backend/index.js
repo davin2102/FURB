@@ -2,7 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
+const path = require('path');
 const Item = require('./models/Item');
+const SoldItem = require('./models/SoldItem'); // Add this line
 
 const app = express();
 app.use(cors());
@@ -16,16 +18,16 @@ app.get('/', (req, res) => {
 // Configure multer for image upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Store uploaded files in the 'uploads' directory
+    cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname); // Rename the file to avoid conflicts
+    cb(null, Date.now() + '-' + file.originalname);
   }
 });
 
 const upload = multer({ 
   storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+  limits: { fileSize: 10 * 1024 * 1024 }
 });
 
 // MongoDB Atlas connection
@@ -33,10 +35,8 @@ mongoose.connect('mongodb+srv://User123:12345@cluster0.3fut4u7.mongodb.net/furb-
   .then(() => console.log('MongoDB Atlas connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Add item
+// ITEMS ROUTES
 app.post('/items', upload.single('image'), async (req, res) => {
-  console.log('req.file:', req.file);
-  console.log('req.body:', req.body);
   try {
     const item = new Item({
       title: req.body.title,
@@ -49,18 +49,16 @@ app.post('/items', upload.single('image'), async (req, res) => {
     await item.save();
     res.status(201).json(item);
   } catch (err) {
-    console.error('Error saving item:', err);
     res.status(400).json({ error: err.message });
   }
 });
 
-// Get all items
 app.get('/items', async (req, res) => {
   try {
     const items = await Item.find();
     const itemsWithImageUrl = items.map(item => ({
       ...item._doc,
-      imageUrl: `http://localhost:5002/uploads/${item.image}`
+      imageUrl: item.image ? `http://localhost:5002/uploads/${item.image}` : ''
     }));
     res.json(itemsWithImageUrl);
   } catch (err) {
@@ -68,7 +66,6 @@ app.get('/items', async (req, res) => {
   }
 });
 
-// Search items
 app.get('/items/search', async (req, res) => {
   try {
     const query = req.query.q;
@@ -77,7 +74,7 @@ app.get('/items/search', async (req, res) => {
     });
     const itemsWithImageUrl = items.map(item => ({
       ...item._doc,
-      imageUrl: `http://localhost:5002/uploads/${item.image}`
+      imageUrl: item.image ? `http://localhost:5002/uploads/${item.image}` : ''
     }));
     res.json(itemsWithImageUrl);
   } catch (err) {
@@ -89,14 +86,58 @@ app.get('/items/:id', async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
     if (!item) return res.status(404).json({ message: 'Item not found' });
-    const imageUrl = `http://localhost:5002/uploads/${item.image}`;
+    const imageUrl = item.image ? `http://localhost:5002/uploads/${item.image}` : '';
     res.json({ ...item._doc, imageUrl });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
+app.delete('/items/:id', async (req, res) => {
+  try {
+    await Item.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Item deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// SOLD ITEMS ROUTES
+app.get('/sold-items', async (req, res) => {
+  try {
+    const { email } = req.query;
+    if (!email) return res.status(400).json({ message: 'Email is required' });
+    
+    const soldItems = await SoldItem.find({ seller: email });
+    const itemsWithImageUrl = soldItems.map(item => ({
+      ...item._doc,
+      imageUrl: item.image ? `http://localhost:5002/uploads/${item.image}` : ''
+    }));
+    res.json(itemsWithImageUrl);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.post('/sold-items', async (req, res) => {
+  try {
+    const soldItem = new SoldItem({
+      title: req.body.title,
+      description: req.body.description || '',
+      price: req.body.price || 0,
+      location: req.body.location || '',
+      image: req.body.image || '',
+      seller: req.body.seller,
+      soldDate: new Date()
+    });
+    await soldItem.save();
+    res.status(201).json(soldItem);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 const PORT = 5002;
 app.listen(PORT, () => {
-    console.log(`Item server is running on http://localhost:${PORT}`);
-})
+  console.log(`Item server is running on http://localhost:${PORT}`);
+});

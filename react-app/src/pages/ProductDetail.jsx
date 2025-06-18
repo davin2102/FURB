@@ -16,16 +16,22 @@ const ProductDetail = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     setCurrentUser(user);
     fetch(`http://localhost:5002/items/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setItem(data);
-        fetch(`http://localhost:5000/profile?email=${encodeURIComponent(data.seller)}`)
-          .then(res => res.json())
-          .then(profile => {
-            const name = [profile.firstName, profile.lastName].filter(Boolean).join(" ");
+        fetch(
+          `http://localhost:5000/profile?email=${encodeURIComponent(
+            data.seller
+          )}`
+        )
+          .then((res) => res.json())
+          .then((profile) => {
+            const name = [profile.firstName, profile.lastName]
+              .filter(Boolean)
+              .join(" ");
             setSellerName(name || data.seller);
           })
           .catch(() => setSellerName(data.seller));
@@ -49,10 +55,10 @@ const ProductDetail = () => {
       navigate("/login");
       return;
     }
-    navigate('/Chatroom', { 
-      state: { 
-        selectedUser: { email: item.seller, name: sellerName }
-      }
+    navigate("/Chatroom", {
+      state: {
+        selectedUser: { email: item.seller, name: sellerName },
+      },
     });
   };
 
@@ -112,35 +118,64 @@ const ProductDetail = () => {
                     background: "none",
                     border: "none",
                     padding: 0,
-                    cursor: "pointer"
+                    cursor: "pointer",
                   }}
                 >
                   {/* Modern share SVG */}
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7ca850" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="18" cy="5" r="3"/>
-                    <circle cx="6" cy="12" r="3"/>
-                    <circle cx="18" cy="19" r="3"/>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#7ca850"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="18" cy="5" r="3" />
+                    <circle cx="6" cy="12" r="3" />
+                    <circle cx="18" cy="19" r="3" />
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
                   </svg>
                 </button>
                 <button
-                  className={`product-detail-icon bookmark-btn${bookmarked ? " bookmarked" : ""}`}
+                  className={`product-detail-icon bookmark-btn${
+                    bookmarked ? " bookmarked" : ""
+                  }`}
                   onClick={handleBookmark}
                   title={bookmarked ? "Remove Bookmark" : "Add to Bookmark"}
                   style={{
                     background: "none",
                     border: "none",
                     padding: 0,
-                    cursor: "pointer"
+                    cursor: "pointer",
                   }}
                 >
                   {bookmarked ? (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#f4b400" stroke="#f4b400" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="#f4b400"
+                      stroke="#f4b400"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
                     </svg>
                   ) : (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#bbb"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
                     </svg>
                   )}
@@ -157,24 +192,29 @@ const ProductDetail = () => {
           </div>
 
           {/* Seller Card */}
-          <div className="product-detail-seller-card">
-            <div className="product-detail-seller-row">
-              <div className="product-detail-seller-avatar">
-                {sellerName ? sellerName[0] : "?"}
+          {currentUser && item.seller !== currentUser.email && (
+            <div className="product-detail-seller-card">
+              <div className="product-detail-seller-row">
+                <div className="product-detail-seller-avatar">
+                  {sellerName ? sellerName[0] : "?"}
+                </div>
+                <div>
+                  <div className="product-detail-seller-name">
+                    {sellerName || item.seller}
+                  </div>
+                  <div className="product-detail-seller-member">
+                    {item.seller}
+                  </div>
+                </div>
               </div>
-              <div>
-                <div className="product-detail-seller-name">{sellerName || item.seller}</div>
-                <div className="product-detail-seller-member">{item.seller}</div>
-              </div>
+              <button
+                onClick={handleChatClick}
+                className="product-detail-chat-btn"
+              >
+                Message Seller
+              </button>
             </div>
-
-            <button
-              onClick={handleChatClick}
-              className="product-detail-chat-btn"
-            >
-              Message Seller
-            </button>
-          </div>
+          )}
 
           {/* Description Card */}
           <div className="product-detail-description-card">

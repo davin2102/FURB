@@ -17,11 +17,12 @@
 
 .ItemBox h2 {
   font-size: 18px;
-  margin: 0 0 10px 0;
+  margin: 0 30px 10px 0;
   color: #333;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
 }
 
 .product-image {
@@ -58,6 +59,23 @@
 
 .ItemBox .add-to-cart:hover {
   background-color: #598030;
+  color: #fffeee;
+}
+
+
+.ItemBox .mark-as-sold {
+  width: 100%;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ItemBox .mark-as-sold:hover {
+  background: #e60000;
   color: #fffeee;
 }
 
@@ -100,4 +118,24 @@
 
 .bookmark-icon:hover {
   color: #f4b400;
+}
+
+@media (max-width: 900px) {
+  .ItemBox {
+    min-width: 180px;
+    max-width: 100%;
+    padding: 10px;
+  }
+  .product-image {
+    height: 120px;
+  }
+}
+@media (max-width: 600px) {
+  .ItemBox {
+    min-width: 100px;
+    padding: 6px;
+  }
+  .product-image {
+    height: 80px;
+  }
 }
