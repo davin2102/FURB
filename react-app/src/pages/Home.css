@@ -1,0 +1,63 @@
+/* Home Page Layout */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  
+}
+
+/* Content Section */
+.content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 40px;
+  align-items: center;
+font-family: 'open-sans', sans-serif;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.content-title {
+  font-size: 30px;
+  margin: 0;
+  color: #333;
+  font-weight: 700;
+}
+
+.content-view-all {
+  background: none;
+  border: none;
+  text-decoration: none;
+  color: #649132;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  font-weight: 700;
+  margin-left: 1rem;
+}
+
+.content-view-all:hover {
+  text-decoration: underline;
+}
+
+/* Products Row */
+.products-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: 100%;
+/*  overflow-x: auto; */
+  padding-bottom: 20px;
+  scrollbar-width: none; /* For Firefox */
+}
+
+.products-row::-webkit-scrollbar {
+  display: none; /* For Chrome/Safari */
+}

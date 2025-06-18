@@ -1,0 +1,33 @@
+.scroll-layer-wrapper {
+  display: grid;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.ghost-layer,
+.reveal-layer {
+  grid-area: 1 / 1;
+  white-space: pre-wrap;
+  word-break: break-word;
+  display: inline;
+}
+
+.ghost-layer span {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.reveal-layer span {
+  color: white;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.reveal-layer span.visible {
+  opacity: 1;
+}

@@ -1,0 +1,141 @@
+.ItemBox {
+  min-width: 250px;
+  max-width: 250px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  flex-shrink: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: 'inter', sans-serif;
+  position: relative;
+}
+
+.ItemBox:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ItemBox h2 {
+  font-size: 18px;
+  margin: 0 30px 10px 0;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.ItemBox .price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.location {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.ItemBox .add-to-cart {
+  width: 100%;
+  background-color: #649132;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ItemBox .add-to-cart:hover {
+  background-color: #598030;
+  color: #fffeee;
+}
+
+
+.ItemBox .mark-as-sold {
+  width: 100%;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ItemBox .mark-as-sold:hover {
+  background: #e60000;
+  color: #fffeee;
+}
+
+.bookmark-btn {
+  margin-top: 10px;
+  background: #eee;
+  color: #444;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 0; /* Remove horizontal padding, use only vertical */
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  width: 100%; /* Always take full width */
+  min-height: 40px; /* Set a fixed min height to prevent resizing */
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.bookmark-btn.bookmarked {
+  background: #A0C878;
+  color: white;
+}
+
+.bookmark-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.7rem;
+  color: #bbb;
+  cursor: pointer;
+  z-index: 2;
+  transition: color 0.2s;
+}
+
+.bookmark-icon.bookmarked {
+  color: #f4b400; /* gold */
+}
+
+.bookmark-icon:hover {
+  color: #f4b400;
+}
+
+@media (max-width: 900px) {
+  .ItemBox {
+    min-width: 180px;
+    max-width: 100%;
+    padding: 10px;
+  }
+  .product-image {
+    height: 120px;
+  }
+}
+@media (max-width: 600px) {
+  .ItemBox {
+    min-width: 100px;
+    padding: 6px;
+  }
+  .product-image {
+    height: 80px;
+  }
+}

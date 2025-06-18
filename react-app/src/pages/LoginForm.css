@@ -1,0 +1,105 @@
+.login-page {
+  min-height: 100vh;
+  width: 100vw;
+  background: radial-gradient(circle at 50% 50%, #c7e59c 0%, #eaf3b8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  padding: 48px 32px 40px 32px;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.logo img {
+  width: 120px;
+  margin-bottom: 8px;
+}
+
+.login-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #7ca850;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  padding: 14px 16px;
+  border: 1px solid #dbe6c7;
+  border-radius: 12px;
+  font-size: 1rem;
+  outline: none;
+  background: #f8fbe9;
+  transition: border 0.2s;
+}
+
+.login-form input[type="email"]:focus,
+.login-form input[type="password"]:focus {
+  border: 1.5px solid #7ca850;
+  background: #fff;
+}
+
+.forgot-password {
+  margin-top: 4px;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.forgot-password a{
+  color: #A0C878;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.forgot-password a:hover{
+  text-decoration: underline;
+  color: #649132;
+}
+
+.login-button {
+  margin-top: 12px;
+  width: 100%;
+  padding: 14px 0;
+  background: #7ca850;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.login-button:hover {
+  background: #649132;
+}
