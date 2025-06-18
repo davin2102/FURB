@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SearchBar.css";
 
+const ITEMS_API_BASE_URL = process.env.NEXT_PUBLIC_ITEMS_BACKEND_URL;
 const SearchBar = () => {
   const [query, setQuery] = useState("");
   const [aiPrompt, setAIPrompt] = useState("");
@@ -16,24 +17,30 @@ const SearchBar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!query || aiMode) {
-      setSuggestions([]);
-      return;
-    }
-    const fetchSuggestions = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5002/items/search?q=${encodeURIComponent(query)}`
-        );
-        const data = await response.json();
-        setSuggestions(data);
-      } catch (err) {
-        setSuggestions([]);
+    if (!query || aiMode) {
+      setSuggestions([]);
+      return;
+    }
+    const fetchSuggestions = async () => {
+     
+      if (!ITEMS_API_BASE_URL) {
+          console.error("ITEMS_BACKEND_URL environment variable is not set!");
+          setSuggestions([]);
+          return;
       }
-    };
-    const timeoutId = setTimeout(fetchSuggestions, 300);
-    return () => clearTimeout(timeoutId);
-  }, [query, aiMode]);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_ITEMS_BACKEND_URL}/items/search?q=${encodeURIComponent(query)}`
+        );
+        const data = await response.json();
+        setSuggestions(data);
+      } catch (err) {
+        setSuggestions([]);
+      }
+    };
+    const timeoutId = setTimeout(fetchSuggestions, 300);
+    return () => clearTimeout(timeoutId);
+  }, [query, aiMode]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
